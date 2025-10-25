@@ -2,7 +2,7 @@
 FROM ubuntu:24.04
 
 # Labels for metadata
-LABEL maintainer="<maartenmaes989@gmail.com>"
+LABEL maintainer="maartenmaes989@example.com"
 
 # Avoid prompts during package install
 ENV DEBIAN_FRONTEND=noninteractive
@@ -18,7 +18,7 @@ RUN useradd -m -s /bin/bash webuser
 # Set Apache to run as non-root user (extra credit)
 # You can uncomment for extra credit
  RUN sed -i 's/APACHE_RUN_USER=www-data/APACHE_RUN_USER=webuser/' /etc/apache2/envvars && \
-     sed -i 's/APACHE_RUN_GROUP=www-data/APACHE_RUN_GROUP/webuser/' /etc/apache2/envvars
+     sed -i 's/APACHE_RUN_GROUP=www-data/APACHE_RUN_GROUP=webuser/' /etc/apache2/envvars
 
 # Copy web files
 COPY src/ /var/www/html/
