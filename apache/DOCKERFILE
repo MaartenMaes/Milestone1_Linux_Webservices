@@ -12,19 +12,18 @@ RUN apt-get update && \
     apt-get install -y apache2 php libapache2-mod-php php-mysql && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Create a non-root user for extra credit (optional)
+# Create a non-root user 
 RUN useradd -m -s /bin/bash webuser
 
-# Set Apache to run as non-root user (extra credit)
-# You can uncomment for extra credit
+# Set up apache to run as non-root user
  RUN sed -i 's/APACHE_RUN_USER=www-data/APACHE_RUN_USER=webuser/' /etc/apache2/envvars && \
      sed -i 's/APACHE_RUN_GROUP=www-data/APACHE_RUN_GROUP=webuser/' /etc/apache2/envvars
 
 # Copy web files
 COPY src/ /var/www/html/
 
-# Expose port 80
+# Expose port 80 to be able to receive HTTP traffic
 EXPOSE 80
 
-# Start Apache in foreground
+# Start Apache in the foreground
 CMD ["apachectl", "-D", "FOREGROUND"]

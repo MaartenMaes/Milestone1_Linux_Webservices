@@ -1,28 +1,28 @@
-services:
-  apache:
-    build: ./apache
-    container_name: contapa2-m1-10
+services: # Describing what services are being used
+  apache: 
+    build: ./apache # Build the apache service from ./apache folder
+    container_name: contapa2-m1-MM # Assign the container to a specific name
     ports:
-      - "8085:80"
+      - "8085:80" # Forward port 80 to be used on the local machine as port 8085
     volumes:
-      - ./apache/src:/var/www/html
+      - ./apache/src:/var/www/html # Mount the local ./apache/src directory to /var/www/html inside the container
     depends_on:
-      - db
+      - db # Making sure the db container (mariadb) start before starting the apache container
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      test: ["CMD", "curl", "-f", "http://localhost:80"] # Test in the command line an HTTP request to the localhost on port 80
+      interval: 30s # Wait 30 seconds in between the retries
+      timeout: 10s # Health checks fails if there is no response from the test within 10 seconds
+      retries: 3 # Try this health check 3 times
 
   db:
-    image: mariadb:latest
-    container_name: contsql-m1-10
-    environment:
+    image: mariadb:latest # Use latest mariadb image
+    container_name: contsql-m1-MM 
+    environment: # Set up the environment within the container with a specific password and database name
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: milestone1
-    volumes:
-      - ./db:/docker-entrypoint-initdb.d
-      - db_data:/var/lib/mysql
+    volumes: 
+      - ./db:/docker-entrypoint-initdb.d # Mount a local ./db folder for database initialization scripts
+      - db_data:/var/lib/mysql # Persist data in a named Docker volume (db_data)
 
-volumes:
+volumes: # Define a named volume to persist database data between container restarts to provide persistence
   db_data:
