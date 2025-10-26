@@ -1,25 +1,19 @@
 <?php
-$servername = "db"; // Name of the container
-$username = "root";             // The default MYSQL user
-$password = "rootpassword";     // Setting a MYSQL password
-$dbname = "milestone1"; // Name of the database
+$servername = "db";       
+$username   = "root";
+$password   = "rootpassword";
+$dbname     = "milestone1";
 
-// Use these variables to connect to the database
 $conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) { // Check the connection to the database
-    die("Connection failed: " . $conn->connect_error); // If the connection fails, stop executing and leave an error message behind
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT fullname FROM userinfo LIMIT 1"; // Fetch the name from the userinfo table with the limit of 1 record
-$result = $conn->query($sql); // Pass the connection query to a variable called result
+$sql = "SELECT fullname FROM userinfo LIMIT 1";
+$result = $conn->query($sql);
 
-if ($result->num_rows > 0) { // If result turned back at least 1 row get the fullname record from the table in the database and put it into a string.
-    $row = $result->fetch_assoc();
-    echo "<h1>" . $row['fullname'] . " has reached Milestone 1!!</h1>";
-} else {
-    echo "No name found in DB."; // If the result is empty leave an info message behind
-}
-
-$conn->close(); // Close the connection to the database
+$fullname = ($result && $result->num_rows > 0) ? $result->fetch_assoc()['fullname'] : 'No name found';
+$hostname = gethostname(); 
 ?>
+<h1><?php echo "$fullname has reached Milestone 1!!"; ?></h1>
+<p>Served by container: <?php echo $hostname; ?></p>
